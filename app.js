@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
     res.send('Hello');
 });
 
-app.post('/upload', upload.single('image'), async (req, res) => {
+app.post('/upload', upload.single('image'),  async (req, res) => {
     try {
         let api_post_url = process.env.API_URL;
         let key = process.env.API_KEY;
@@ -61,24 +61,27 @@ app.post('/upload', upload.single('image'), async (req, res) => {
             'url': image_url
         }
 
-        await axios.post(uri1, data, options)
-            .then(function (response) {
-                //console.log(response.headers['operation-location']);
+         await axios.post(uri1, data, options)
+            .then(  function (response) {
                 var uri2 = response.headers['operation-location'];
-                (async () => {
                     try {
-                        const response = await axios.get(uri2, options)
-                            .then(function (response) {
-                                res.status(200).send(response.data);
+                        setTimeout(() => {
+                              axios.get(uri2, options)
+                            .then( function (response) {
+                              
+                                let ocrResults = response.data.analyzeResult.readResults
+                
+                                    res.status(200).send(ocrResults);
+                                
                             })
                             .catch(function (error) {
                                 throw error;
                             });
+                        }, 1000)  
 
                     } catch (error) {
                         console.log(error.response.body);
                     }
-                })();
 
             })
             .catch(function (error) {
@@ -94,7 +97,6 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
 
 });
-
 
 
 function errHandler(err, req, res, next) {
