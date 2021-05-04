@@ -3,25 +3,26 @@ const app = express();
 
 const multer = require('multer');
 const axios = require('axios');
+const path = require('path');
+
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 // bodyParser is deprecated fe express version > 14
 app.use(express.json());
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
 
-const path = require('path');
 
+//configure secure storage for API keys
 require('dotenv').config();
 
 var cors = require('cors');
 app.use(cors());
 
 
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-
-
+//swagger playground configuration
 const options = {
     swaggerDefinition: {
         info: {
@@ -38,7 +39,8 @@ const options = {
 const specs = swaggerJsdoc(options);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-//storage engine
+
+// multer storage engine
 const multer_storage = multer.diskStorage({
     destination: './upload/images',
     filename: (req, file, cb) => {
@@ -62,6 +64,7 @@ const upload = multer({
         cb(null, true)
     },
 });
+
 
 app.get('/', (req, res) => {
     res.send('Hello');
@@ -105,18 +108,22 @@ app.get('/', (req, res) => {
  */
 app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
     try {
+        //Extract  optional query parameter language
         const language = req.query.language;
         const { url } = req.body;
 
+        // Fetch api base url and api key from safe env storage
         let api_post_url = process.env.API_URL;
         let key = process.env.API_KEY;
         if (!key) { throw new Error('Set your environment variables for your subscription key and endpoint.'); }
 
+        //Set api url 
         var uri = api_post_url + '/vision/v3.0/read/analyze';
         if (language) {
             uri = uri + '?=' + language;
         }
 
+        //Handle file upload and file url validation
         let image_url;
         if (url && req.file) {
             res.status(400).send("Either upload the file or provide url. Do not input both.");
@@ -139,12 +146,13 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
         let data = {
             'url': image_url
         }
-
+        // post file or its url to Azure computer vision api for text OCR
         axios.post(uri, data, options)
             .then(function (response) {
                 var uri2 = response.headers['operation-location'];
                 try {
                     setTimeout(() => {
+                        //get analysed result from Azure computer vision - text OCR API
                         axios.get(uri2, options)
                             .then(function (response) {
                                 let ocrResults = response.data.analyzeResult.readResults
@@ -152,19 +160,19 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
                             })
                             .catch(function (error) {
                                 console.log(error);
-                                res.status(500).send("Error in Azure text ocr analysed result fetching");
+                                res.status(500).send("Error in Azure text OCR result fetching");
                             });
                     }, 1000)
 
                 } catch (error) {
                     console.log(error);
-                    res.status(500).send("Error from Azure text ocr read and analyse");
+                    res.status(500).send("Internal server error");
                 }
 
             })
             .catch(function (error) {
                 console.log(error);
-                res.status(500).send("Internal server error");
+                res.status(500).send("Error from Azure text OCR read and analyse");
             });
 
     } catch (error) {
