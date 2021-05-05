@@ -285,6 +285,7 @@ Example response:
 ```
 {
   "success": false,
+  "code": "Unspecified", 
   "message": "Internal Server Error"
 }
 
