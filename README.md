@@ -88,7 +88,6 @@ JSON fields in the response body and their descrption:
 | page | Integer	 | The 1-based page number in the input document. |
 | unit | String	 | The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is "inch". |
 | language | String	 | The input language of the overall document. |
-| version | String	 | The version of schema used for this result. |
 
 #
 #
