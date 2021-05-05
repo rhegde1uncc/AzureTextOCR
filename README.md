@@ -29,7 +29,9 @@ The  API is optimized for text-heavy images and multi-page, mixed language, and 
 The text extraction is currently only available for Dutch, English, French, German, Italian, Portuguese, and Spanish.
 
 # How to consume this simple Text OCR API?
-It is very simple and straight forward to use this Text Scanner API. Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!.
+It is very simple and straight forward to use this Text Scanner API. 
+
+## Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!.
 
 ### Base url:
 ```
