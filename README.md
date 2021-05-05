@@ -190,4 +190,9 @@ Example response:
 If problem is due to the API service, then this status code is returned.
 Example response:
 ```
+{
+  "success": false,
+  "message": "Internal Server error"
+}
+
 ```
