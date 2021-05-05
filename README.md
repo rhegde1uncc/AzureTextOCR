@@ -1,5 +1,5 @@
 # Text Scanner API  V1.0
-Made with Azure Text OCR
+Made with [Azure Text OCR](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/overview-ocr)
 
 
 
