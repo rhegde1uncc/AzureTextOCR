@@ -29,5 +29,37 @@ The  API is optimized for text-heavy images and multi-page, mixed language, and 
 The text extraction is currently only available for Dutch, English, French, German, Italian, Portuguese, and Spanish.
 
 # How to consume this simple Text OCR API?
-It is very simple and straight forward to use this Text Scanner API. Try out [SWAGGER playground](http://142.93.56.167:3000/docs). 
-                                                                                                                  
+It is very simple and straight forward to use this Text Scanner API. Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!.
+
+### Base url:
+```
+http://142.93.56.167:3000/api/v1/ocr
+```
+### Query Pararameters:
+An optional query parameter named 'language' is accepted by the API.
+```
+Query param name : 'language'
+Allowed values :  'de', 'en', 'es', 'fr', 'it', 'nl', 'pt'
+ ```
+### Request Headers:
+If your input to the Text Scanner API is image URL, then set request header as below:
+```
+'Content-Type': 'application/json'
+```
+If your input to the Text Scanner API is raw image binary, then set request header as below:
+```
+'Content-Type': 'multipart/form-data'
+```
+### Request body
+Input passed within the POST body. 
+Supported input methods: raw image binary or image URL.
+
+**Input requirements:**
+-	Supported image formats: JPEG, PNG, BMP, PDF and TIFF.
+-	Please do note MPO (Multi Picture Objects) embedded JPEG files are not supported.
+- For multi-page PDF and TIFF documents:  currently, this API is supporting 2 pages processing only.
+- Image file size must be less than 4 MB.
+- The image/document page dimensions must be at least 50 x 50 pixels and at most 10000 x 10000 pixels.
+-	The PDF file dimensions must be at most 17 x 17 inches, corresponding to Legal or A3 paper sizes and smaller.
+
+
