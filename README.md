@@ -35,7 +35,7 @@ It is very simple and straight forward to use this Text Scanner API.
 
 ### Base url:
 ```
-http://142.93.56.167:3000/api/v1/ocr
+http://142.93.56.167:3000/api/v1/textScan
 ```
 ### Query Pararameters:
 An optional query parameter named 'language' is accepted by the API.
