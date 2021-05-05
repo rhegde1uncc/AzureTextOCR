@@ -31,7 +31,7 @@ The text extraction is currently only available for Dutch, English, French, Germ
 # How to consume this simple Text OCR API?
 It is very simple and straight forward to use this Text Scanner API. 
 
-## Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!.
+## Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!
 
 ### Base url:
 ```
