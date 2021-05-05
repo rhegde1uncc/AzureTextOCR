@@ -72,7 +72,7 @@ app.get('/', (req, res) => {
 
 /**
  * @swagger
- * /api/v1/ocr:
+ * /api/v1/textScan:
  *   post:
  *     tags:
  *       - Text OCR
@@ -106,7 +106,7 @@ app.get('/', (req, res) => {
  *        '500':
  *          description: Internal server error  
  */
-app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
+app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
     try {
         //Extract  optional query parameter language
         const language = req.query.language;
@@ -120,7 +120,7 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
         //Set api url 
         var uri = api_post_url + '/vision/v3.0/read/analyze';
         if (language) {
-            uri = uri + '?=' + language;
+            uri = uri + '?language=' + language;
         }
 
         //Handle file upload and file url validation
