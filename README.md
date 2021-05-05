@@ -72,7 +72,8 @@ Supported input methods: raw image binary or image URL.
 #
 ### 200 : OK
 This response code means a successful response received.
-JSON fields in the response body:
+
+JSON fields in the response body and their descrption:
 
 | Fields| Type | Description |
 | --- | --- | --- |
