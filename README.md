@@ -8,7 +8,7 @@ Text Scanner API [(Application Programming Interfaces)](https://en.wikipedia.org
 
 Text Scanner API  is organized around [REST](https://en.wikipedia.org/wiki/Representational_state_transfer). It accepts raw binary files or image URLs in request bodies, returns JSON responses, and uses standard HTTP response codes.  This API supports detecting both printed and handwritten text in the same image or document.
 
-# What is Optical Character Recognition(OCR)?
+# What is Optical Character Recognition [(OCR)](https://en.wikipedia.org/wiki/Optical_character_recognition)?
 Optical character recognition (OCR) allows you to extract printed or handwritten text from images, such as photos of street signs and products, as well as from documents—invoices, bills, financial reports, articles, and more. 
 
 # How is this  Text Scanner API built?
