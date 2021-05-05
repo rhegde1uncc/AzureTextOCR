@@ -150,25 +150,18 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
         axios.post(uri, data, options)
             .then(function (response) {
                 var uri2 = response.headers['operation-location'];
-                try {
-                    setTimeout(() => {
-                        //get analysed result from Azure computer vision - text OCR API
-                        axios.get(uri2, options)
-                            .then(function (response) {
-                                let ocrResults = response.data.analyzeResult.readResults
-                                res.status(200).send(ocrResults);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                                res.status(500).send("Error in Azure text OCR result fetching");
-                            });
-                    }, 1000)
-
-                } catch (error) {
-                    console.log(error);
-                    res.status(500).send("Internal server error");
-                }
-
+                setTimeout(() => {
+                    //get analysed result from Azure computer vision - text OCR API
+                    axios.get(uri2, options)
+                        .then(function (response) {
+                            let ocrResults = response.data.analyzeResult.readResults
+                            res.status(200).send(ocrResults);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            res.status(500).send("Error in Azure text OCR result fetching");
+                        });
+                }, 1000)
             })
             .catch(function (error) {
                 console.log(error);
