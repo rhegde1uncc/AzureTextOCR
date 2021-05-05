@@ -33,16 +33,20 @@ It is very simple and straight forward to use this Text Scanner API.
 
 ## Try out [SWAGGER playground](http://142.93.56.167:3000/docs)!!
 
-### Base url:
+### Host:
 ```
-http://142.93.56.167:3000/api/v1/textScan
+http://142.93.56.167:3000/
 ```
 ### Query Pararameters:
 An optional query parameter named 'language' is accepted by the API.
 ```
 Query param name : 'language'
 Allowed values :  'de', 'en', 'es', 'fr', 'it', 'nl', 'pt'
- ```
+```
+### Request URL:
+```
+http://142.93.56.167:3000/api/v1/textScan[?language={string}]
+```
 ### Request Headers:
 If your input to the Text Scanner API is image URL, then set request header as below:
 ```
