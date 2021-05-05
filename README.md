@@ -62,4 +62,118 @@ Supported input methods: raw image binary or image URL.
 - The image/document page dimensions must be at least 50 x 50 pixels and at most 10000 x 10000 pixels.
 -	The PDF file dimensions must be at most 17 x 17 inches, corresponding to Legal or A3 paper sizes and smaller.
 
+## Response :
+| Response code | Description |
+| --- | --- |
+| 200 | OK |
+| 400 | Input Validation Failed |
+| 500 | Internal Server Error |
+#
+#
+### 200 : OK
+This response code means a successful response received.
+JSON fields in the response body:
 
+| Fields| Type | Description |
+| --- | --- | --- |
+| lines | [Object]	 | 	List of text lines. The maximum number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change across images and OCR version updates. Thus, business logic should be built upon the actual line location instead of order. |
+| words | [Object]	 | List of words in the text line. |
+| boundingBox | [Number]	 | Quadrangle bounding box of a line or word, depending on the parent object, specified as a list of 8 numbers. The coordinates are specified relative to the top-left of the original image. The eight numbers represent the four points, clockwise from the top-left corner relative to the text orientation. For image, the (x, y) coordinates are measured in pixels. For PDF, the (x, y) coordinates are measured in inches. |
+| text | String	 | The text content of a line or word. |
+| confidence | Number	 | Confidence value between 0 and 1 inclusive. |
+| width | Number	 | The width of the image/PDF in pixels/inches, respectively. |
+| height | Number	 | 	The height of the image/PDF in pixels/inches, respectively. |
+| angle | Number	 | The general orientation of the text in clockwise direction, measured in degrees between (-180, 180]. |
+| page | Integer	 | The 1-based page number in the input document. |
+| unit | String	 | The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is "inch". |
+| language | String	 | The input language of the overall document. |
+| version | String	 | The version of schema used for this result. |
+
+#
+#
+A successful response is returned in JSON. The sample application parses and displays a successful response in the command prompt window, similar to the following example:
+```JSON
+[
+    {
+        "page": 1,
+        "angle": 0.971,
+        "width": 300,
+        "height": 200,
+        "unit": "pixel",
+        "lines": [
+            {
+                "boundingBox": [
+                    97,
+                    80,
+                    217,
+                    81,
+                    217,
+                    105,
+                    97,
+                    104
+                ],
+                "text": "APPRENDRE LE",
+                "words": [
+                    {
+                        "boundingBox": [
+                            97,
+                            81,
+                            190,
+                            81,
+                            190,
+                            106,
+                            98,
+                            105
+                        ],
+                        "text": "APPRENDRE",
+                        "confidence": 0.975
+                    },
+                    {
+                        "boundingBox": [
+                            195,
+                            81,
+                            218,
+                            81,
+                            217,
+                            106,
+                            195,
+                            106
+                        ],
+                        "text": "LE",
+                        "confidence": 0.987
+                    }
+                ]
+            },
+            {
+                "boundingBox": [
+                    98,
+                    107,
+                    216,
+                    109,
+                    216,
+                    146,
+                    98,
+                    144
+                ],
+                "text": "FRANÇAIS",
+                "words": [
+                    {
+                        "boundingBox": [
+                            99,
+                            108,
+                            216,
+                            109,
+                            217,
+                            146,
+                            99,
+                            145
+                        ],
+                        "text": "FRANÇAIS",
+                        "confidence": 0.752
+                    }
+                ]
+            }
+        ]
+    }
+]
+```
