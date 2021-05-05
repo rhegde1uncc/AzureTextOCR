@@ -185,7 +185,7 @@ Example response:
 ```
 ```
 
-# 500: Internal Server Error
+## 500: Internal Server Error
 If problem is due to the API service, then this status code is returned.
 Example response:
 ```
