@@ -272,6 +272,11 @@ A successful response is returned in JSON. The sample application parses and dis
 If there is a problem with the supplied input to the Text Scanner API, then this response is received.
 Example response:
 ```
+{
+  "success": false,
+  "code": "ProblemWithURL",
+  "message": "Input Validation Failed"
+}
 ```
 
 ## 500: Internal Server Error
