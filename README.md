@@ -62,7 +62,7 @@ Supported input methods: raw image binary or image URL.
 - The image/document page dimensions must be at least 50 x 50 pixels and at most 10000 x 10000 pixels.
 -	The PDF file dimensions must be at most 17 x 17 inches, corresponding to Legal or A3 paper sizes and smaller.
 
-## Response :
+## Possible Responses :
 | Response code | Description |
 | --- | --- |
 | 200 | OK |
@@ -176,4 +176,17 @@ A successful response is returned in JSON. The sample application parses and dis
         ]
     }
 ]
+```
+#
+## 400: Input Validation Failed
+
+If there is a problem with the supplied input to the Text Scanner API, then this response is received.
+Example response:
+```
+```
+
+# 500: Internal Server Error
+If problem is due to the API service, then this status code is returned.
+Example response:
+```
 ```
