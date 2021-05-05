@@ -192,7 +192,7 @@ Example response:
 ```
 {
   "success": false,
-  "message": "Internal Server error"
+  "message": "Internal Server Error"
 }
 
 ```
