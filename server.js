@@ -133,7 +133,11 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
             //const image_url = `http://192.168.154.1:3000/ocrImages/${req.file.filename}`;
             image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
         } else {
-            res.status(400).send("Problem with url");
+            return res.status(400).json({
+                success: false,
+                code:"ProblemWithURL",
+                message:"Input Validation Failed"
+            });
         }
 
         let options = {
@@ -155,22 +159,38 @@ app.post('/api/v1/ocr', upload.single('image'), (req, res) => {
                     axios.get(uri2, options)
                         .then(function (response) {
                             let ocrResults = response.data.analyzeResult.readResults
-                            res.status(200).send(ocrResults);
+                            return res.status(200).json({
+                                success: true,
+                                readResults: ocrResults
+                            });
                         })
                         .catch(function (error) {
-                            console.log(error);
-                            res.status(500).send("Error in Azure text OCR result fetching");
+                            console.log(error.code);
+                            console.log(error.message);
+                            return res.status(500).json({
+                                success: false,
+                                code:error.code,
+                                message:"Internal Server Error"
+                            });
                         });
-                }, 1000)
+                }, 1000);
             })
             .catch(function (error) {
-                console.log(error);
-                res.status(500).send("Error from Azure text OCR read and analyse");
+                console.log(error.code);
+                console.log(error.message);
+                return res.status(500).json({
+                    success: false,
+                    code:error.code,
+                    message:"Internal Server Error"
+                });
             });
-
     } catch (error) {
         console.log(error);
-        res.status(500).send("Internal server error");
+        return res.status(500).json({
+            success: false,
+            code:"OwnProblemOfTextScannerAPI",
+            message:"Internal Server Error"
+        });
     }
 
 
