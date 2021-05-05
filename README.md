@@ -94,89 +94,177 @@ JSON fields in the response body and their descrption:
 #
 A successful response is returned in JSON. The sample application parses and displays a successful response in the command prompt window, similar to the following example:
 ```JSON
-[
+{
+  "success": true,
+  "readResults": [
     {
-        "page": 1,
-        "angle": 0.971,
-        "width": 300,
-        "height": 200,
-        "unit": "pixel",
-        "lines": [
+      "page": 1,
+      "angle": 1.663,
+      "width": 800,
+      "height": 550,
+      "unit": "pixel",
+      "lines": [
+        {
+          "boundingBox": [
+            96,
+            80,
+            671,
+            98,
+            666,
+            199,
+            96,
+            193
+          ],
+          "text": "LAST Wednesday",
+          "words": [
             {
-                "boundingBox": [
-                    97,
-                    80,
-                    217,
-                    81,
-                    217,
-                    105,
-                    97,
-                    104
-                ],
-                "text": "APPRENDRE LE",
-                "words": [
-                    {
-                        "boundingBox": [
-                            97,
-                            81,
-                            190,
-                            81,
-                            190,
-                            106,
-                            98,
-                            105
-                        ],
-                        "text": "APPRENDRE",
-                        "confidence": 0.975
-                    },
-                    {
-                        "boundingBox": [
-                            195,
-                            81,
-                            218,
-                            81,
-                            217,
-                            106,
-                            195,
-                            106
-                        ],
-                        "text": "LE",
-                        "confidence": 0.987
-                    }
-                ]
+              "boundingBox": [
+                97,
+                81,
+                337,
+                85,
+                335,
+                180,
+                101,
+                195
+              ],
+              "text": "LAST",
+              "confidence": 0.985
             },
             {
-                "boundingBox": [
-                    98,
-                    107,
-                    216,
-                    109,
-                    216,
-                    146,
-                    98,
-                    144
-                ],
-                "text": "FRANÇAIS",
-                "words": [
-                    {
-                        "boundingBox": [
-                            99,
-                            108,
-                            216,
-                            109,
-                            217,
-                            146,
-                            99,
-                            145
-                        ],
-                        "text": "FRANÇAIS",
-                        "confidence": 0.752
-                    }
-                ]
+              "boundingBox": [
+                360,
+                86,
+                665,
+                124,
+                655,
+                199,
+                357,
+                180
+              ],
+              "text": "Wednesday",
+              "confidence": 0.755
             }
-        ]
+          ]
+        },
+        {
+          "boundingBox": [
+            103,
+            230,
+            741,
+            252,
+            739,
+            340,
+            103,
+            325
+          ],
+          "text": "We had a good",
+          "words": [
+            {
+              "boundingBox": [
+                132,
+                233,
+                259,
+                244,
+                263,
+                331,
+                136,
+                321
+              ],
+              "text": "We",
+              "confidence": 0.986
+            },
+            {
+              "boundingBox": [
+                276,
+                245,
+                443,
+                253,
+                449,
+                340,
+                281,
+                332
+              ],
+              "text": "had",
+              "confidence": 0.981
+            },
+            {
+              "boundingBox": [
+                460,
+                254,
+                512,
+                255,
+                519,
+                340,
+                467,
+                340
+              ],
+              "text": "a",
+              "confidence": 0.986
+            },
+            {
+              "boundingBox": [
+                530,
+                255,
+                732,
+                252,
+                740,
+                339,
+                536,
+                340
+              ],
+              "text": "good",
+              "confidence": 0.559
+            }
+          ]
+        },
+        {
+          "boundingBox": [
+            111,
+            379,
+            544,
+            392,
+            537,
+            490,
+            109,
+            461
+          ],
+          "text": "Team building",
+          "words": [
+            {
+              "boundingBox": [
+                114,
+                387,
+                282,
+                380,
+                277,
+                455,
+                113,
+                444
+              ],
+              "text": "Team",
+              "confidence": 0.952
+            },
+            {
+              "boundingBox": [
+                293,
+                380,
+                542,
+                397,
+                532,
+                491,
+                288,
+                456
+              ],
+              "text": "building",
+              "confidence": 0.69
+            }
+          ]
+        }
+      ]
     }
-]
+  ]
+}
 ```
 #
 ## 400: Input Validation Failed
