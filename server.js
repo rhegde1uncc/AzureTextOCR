@@ -154,9 +154,10 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
          axios.post(uri, data, options)
             .then( function (response) {
                 var uri2 = response.headers['operation-location'];
-                
-                // get request is placed in intervals until response status is succeeded. 
-                // Response status can have any of four values: notStarted, running, failed,succeeded
+
+               
+                // Response status of get read results API call can have any of four values: notStarted, running, failed and succeeded
+                // get request is placed in intervals until response status becomes succeeded. 
                 var refreshContent;
                 refreshContent = setInterval(function() {
                 axios.get(uri2, options)
