@@ -299,6 +299,13 @@ Example response:
 # Examples
 ### SWAGGER
 
-https://user-images.githubusercontent.com/71330830/117323594-07bdc180-ae5d-11eb-8f91-e987c12574e1.mp4
+https://user-images.githubusercontent.com/71330830/117339945-57f14f80-ae6e-11eb-9ad5-916ad2797443.mp4
+
+
+#
+### Postman
+
+
+https://user-images.githubusercontent.com/71330830/117339972-5f185d80-ae6e-11eb-8313-7dc93090243a.mp4
 
 
