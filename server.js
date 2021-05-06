@@ -42,7 +42,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // multer storage engine
 const multer_storage = multer.diskStorage({
-    destination: './upload/images',
+    destination: './upload/images', // In remote server, it is ./html/upload/images as nginx serves html folder
     filename: (req, file, cb) => {
         return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
@@ -130,13 +130,13 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
         } else if (url) {
             image_url = url;
         } else if (req.file) {
-            image_url = `http://localhost:3000/ocrImages/${req.file.filename}`; //localhost to be replaced by remote server address
-            //image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
+            //image_url = `http://localhost:3000/ocrImages/${req.file.filename}`; //localhost to be replaced by remote server address
+            image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
         } else {
             return res.status(400).json({
                 success: false,
-                code: "ProblemWithURL",
-                message: "Input Validation Failed"
+                code:"ProblemWithURL",
+                message:"Input Validation Failed"
             });
         }
 
@@ -151,50 +151,49 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
             'url': image_url
         }
         // post file or its url to Azure computer vision api for text OCR
-        axios.post(uri, data, options)
-            .then(function (response) {
+         axios.post(uri, data, options)
+            .then( function (response) {
                 var uri2 = response.headers['operation-location'];
-                  // get request is placed in intervals until response status is succeeded. 
-                  // Response status can have any of four values: notStarted, running, failed,succeeded
+                
+                // get request is placed in intervals until response status is succeeded. 
+                // Response status can have any of four values: notStarted, running, failed,succeeded
                 var refreshContent;
-                refreshContent = setInterval(function () {
-                    axios.get(uri2, options)
+                refreshContent = setInterval(function() {
+                axios.get(uri2, options)
                         .then(function (response) {
-                            if (response.data && response.data.status == 'succeeded') {
-                                clearInterval(refreshContent);
-                                let ocrResults = response.data.analyzeResult.readResults
-                                return res.status(200).json({
-                                    success: true,
-                                    readResults: ocrResults
-                                });
-                            }
+                                if(response.data && response.data.status == 'succeeded') {
+                                    clearInterval(refreshContent);
+                                    let ocrResults = response.data.analyzeResult.readResults
+                                    return res.status(200).json({
+                                        success: true,
+                                        readResults: ocrResults
+                                    });
+                                }
                         })
                         .catch(function (error) {
                             console.log(error.message);
                             return res.status(500).json({
                                 success: false,
-                                code: error.code,
-                                message: "Internal Server Error"
+                                code:error.code,
+                                message:"Internal Server Error"
                             });
                         });
-                }, 1500);
-
+                    }, 10000); //10 seconds minimum wait for getting read results.
             })
             .catch(function (error) {
                 console.log(error.message);
                 return res.status(500).json({
                     success: false,
-                    code: error.code,
-                    message: "Internal Server Error"
+                    code:error.code,
+                    message:"Internal Server Error"
                 });
-            });
-
+            }); 
 
     } catch (error) {
         return res.status(500).json({
             success: false,
-            code: "OwnProblemOfTextScannerAPI",
-            message: "Internal Server Error"
+            code:"OwnProblemOfTextScannerAPI",
+            message:"Internal Server Error"
         });
     }
 
