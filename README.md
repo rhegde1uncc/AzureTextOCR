@@ -296,3 +296,9 @@ Example response:
 }
 
 ```
+# Examples
+### SWAGGER
+
+https://user-images.githubusercontent.com/71330830/117323594-07bdc180-ae5d-11eb-8f91-e987c12574e1.mp4
+
+
