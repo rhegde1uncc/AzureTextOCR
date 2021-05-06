@@ -83,7 +83,7 @@ JSON fields in the response body and their descrption:
 
 | Fields| Type | Description |
 | --- | --- | --- |
-| Success | boolean | Indicates whether response received successfully |
+| Success | boolean | Indicates whether response received successfully or not |
 | lines | [Object]	 | 	List of text lines. The maximum number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change across images and OCR version updates. Thus, business logic should be built upon the actual line location instead of order. |
 | words | [Object]	 | List of words in the text line. |
 | boundingBox | [Number]	 | Quadrangle bounding box of a line or word, depending on the parent object, specified as a list of 8 numbers. The coordinates are specified relative to the top-left of the original image. The eight numbers represent the four points, clockwise from the top-left corner relative to the text orientation. For image, the (x, y) coordinates are measured in pixels. For PDF, the (x, y) coordinates are measured in inches. |
