@@ -130,13 +130,13 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
         } else if (url) {
             image_url = url;
         } else if (req.file) {
-            //const image_url = `http://192.168.154.1:3000/ocrImages/${req.file.filename}`;
-            image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
+            image_url = `http://localhost:3000/ocrImages/${req.file.filename}`; //localhost to be replaced by remote server address
+            //image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
         } else {
             return res.status(400).json({
                 success: false,
-                code:"ProblemWithURL",
-                message:"Input Validation Failed"
+                code: "ProblemWithURL",
+                message: "Input Validation Failed"
             });
         }
 
@@ -154,42 +154,47 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
         axios.post(uri, data, options)
             .then(function (response) {
                 var uri2 = response.headers['operation-location'];
-                setTimeout(() => {
-                    //get analysed result from Azure computer vision - text OCR API
+                  // get request is placed in intervals until response status is succeeded. 
+                  // Response status can have any of four values: notStarted, running, failed,succeeded
+                var refreshContent;
+                refreshContent = setInterval(function () {
                     axios.get(uri2, options)
                         .then(function (response) {
-                            let ocrResults = response.data.analyzeResult.readResults
-                            return res.status(200).json({
-                                success: true,
-                                readResults: ocrResults
-                            });
+                            if (response.data && response.data.status == 'succeeded') {
+                                clearInterval(refreshContent);
+                                let ocrResults = response.data.analyzeResult.readResults
+                                return res.status(200).json({
+                                    success: true,
+                                    readResults: ocrResults
+                                });
+                            }
                         })
                         .catch(function (error) {
-                            console.log(error.code);
                             console.log(error.message);
                             return res.status(500).json({
                                 success: false,
-                                code:error.code,
-                                message:"Internal Server Error"
+                                code: error.code,
+                                message: "Internal Server Error"
                             });
                         });
-                }, 1000);
+                }, 1500);
+
             })
             .catch(function (error) {
-                console.log(error.code);
                 console.log(error.message);
                 return res.status(500).json({
                     success: false,
-                    code:error.code,
-                    message:"Internal Server Error"
+                    code: error.code,
+                    message: "Internal Server Error"
                 });
             });
+
+
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             success: false,
-            code:"OwnProblemOfTextScannerAPI",
-            message:"Internal Server Error"
+            code: "OwnProblemOfTextScannerAPI",
+            message: "Internal Server Error"
         });
     }
 
