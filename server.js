@@ -8,7 +8,7 @@ const path = require('path');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-// bodyParser is deprecated fe express version > 14
+// bodyParser is deprecated for express version > 14
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -130,8 +130,8 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
         } else if (url) {
             image_url = url;
         } else if (req.file) {
-            //image_url = `http://localhost:3000/ocrImages/${req.file.filename}`; //localhost to be replaced by remote server address
-            image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
+            image_url = `http://localhost:3000/ocrImages/${req.file.filename}`; //localhost to be replaced by remote server address
+            //image_url = "https://ocr-demo.abtosoftware.com/uploads/handwritten2.jpg";
         } else {
             return res.status(400).json({
                 success: false,
