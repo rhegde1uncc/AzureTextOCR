@@ -14,16 +14,31 @@ Optical character recognition (OCR) allows you to extract printed or handwritten
 # How is this  Text Scanner API built?
 This Text scanner API  internally uses Azure Computer Vision API(V3.0).The Computer Vision API provides state-of-the-art algorithms to process images and return information. For example, computer vision text OCR can be used to determine if an image contains text content and read the text from the image.
 
+TextScanner API:
+- Protocol used: HTTP
+- Development language: Node.js - Express.js
+- File upload feature developed using : multer
+- API playground : swagger
+
+***--- All dependencies are opensourced ---***
+
 # Why should you use this Text Scanner API rather than Azure Text OCR directly?
 To consume Azure computer vision APIs, you must create an account with Microsoft Azure. You need to create resources for computer vision, and you need to manage your API keys by your own. Moreover, you will have to make 2 separate API calls one to read and another to get analyzed result to extract the text information. But with this API, you will be avoiding those extra steps. You do not have to have an Azure account, you do not have to manage your API keys, you can just make a single request to this API and you will receive the analyzed result with the almost the same speed of Azure text OCR API.
 
 # How Text Scanner API works?
-The  API is optimized for text-heavy images and multi-page, mixed language, and mixed type (print – seven languages and handwritten – English only) documents. The text analysis happens in 2 steps. First, when you upload a file or web address of an image to be analyzed for its text content, Text Scanner API hits the Azure text OCR read API, where actual analysis happens for text recognition. The call returns with a response header called 'Operation-Location'. In the second step,  our API hits Azure text OCR  read results API  with the operation-location obtained  to fetch the detected text lines and words as part of the JSON response. The time for completion of the text extraction process depends on the volume of the text and the number of pages in the document.
+The  API is optimized for text-heavy images and multi-page, mixed language, and mixed type (print – seven languages and handwritten – English only) documents. The text analysis happens in 2 steps. First, when you **upload a file or web address of an image** to be analyzed for its text content,Text Scanner API hits the Azure text OCR read API, where actual analysis happens for text recognition. The call returns with a response header called 'Operation-Location'. In the second step,  our API hits Azure text OCR  read results API  with the operation-location obtained  to fetch the detected text lines and words as part of the JSON response. The time for completion of the text extraction process depends on the volume of the text and the number of pages in the document.
 
 
 ![image](https://user-images.githubusercontent.com/71330830/117196288-4ba8bc00-adb4-11eb-81b8-0b3ef4b7ceaf.png)
 
 
+Azure text OCR read results API equires multiple calls. That is because, its response status varies once request is placed to it. Azure read results API can have 4 posiible statuses: notStarted, running, failed and succeeded. When status changes to succeded that means analysing the text process has been completed. So this TextScanner API places multiple requests in timeintervals until it gets result with status 'succeeded'. 
+
+***TextScanner API to consumes atleast 10 seconds for request processing.*** However, this seems not so costly. Because, it manages two Azure API calls in single API and  requirement of second Azure API (read results API) to have multiple calls.
+
+#
+***If the file url is given as input (the requestbody) to this API, then that url is directly forwarded to the Azure API. In the case of file upload, file will be saved on the server and the url of the saved file will be sent to the Azure Read API for further reading and analyzing the text.***
+#
 
 # Supported languages:
 The text extraction is currently only available for Dutch, English, French, German, Italian, Portuguese, and Spanish.
@@ -95,16 +110,19 @@ JSON fields in the response body and their descrption:
 | page | Integer	 | The 1-based page number in the input document. |
 | unit | String	 | The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is "inch". |
 | language | String	 | The input language of the overall document. |
+#
 
-
-# Examples
-### SWAGGER
-
+## Example - SWAGGER 
+Swagger playground for TextScanner API is available on below url:
+```
+http://142.93.56.167:3000/docs
+```
+#
 https://user-images.githubusercontent.com/71330830/117339945-57f14f80-ae6e-11eb-9ad5-916ad2797443.mp4
 
 
 #
-### Postman
+## Example - Postman
 
 
 https://user-images.githubusercontent.com/71330830/117339972-5f185d80-ae6e-11eb-8313-7dc93090243a.mp4
@@ -288,8 +306,7 @@ A successful response is returned in JSON. The sample application parses and dis
 #
 ## 400: Input Validation Failed
 
-If there is a problem with the supplied input to the Text Scanner API, then this response is received.
-Example response:
+If there is a problem with the supplied input url to the Text Scanner API, then response is received will be as below:.
 ```
 {
   "success": false,
@@ -302,7 +319,8 @@ If input to the TextScanner API is other than  JPEG, PNG, BMP, PDF, and TIFF fil
 ```
 {
   "success": false,
-  "message": "Only JPEG, PNG, BMP, PDF, and TIFF are allowed!"
+  "code": "Only JPEG, PNG, BMP, PDF, and TIFF are allowed!",
+  "message": "Input Validation Failed"
 }
 ```
 #
@@ -310,13 +328,13 @@ If a file size of more than 4mb is uploaded, following error response is provide
 ```
 {
   "success": false,
-  "message": "LIMIT_FILE_SIZE"
+  "code": "LIMIT_FILE_SIZE",
+  "message": "Input Validation Failed"
 }
 ```
 
 ## 500: Internal Server Error
-If problem is due to the API service, then this status code is returned.
-Example response:
+If problem is due to the Azure API service, then example response will be as below:
 ```
 {
   "success": false,
