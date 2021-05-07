@@ -59,7 +59,7 @@ const upload = multer({
     fileFilter: function (req, file, cb) {
         var ext = path.extname(file.originalname);
         if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.bmp' && ext !== '.pdf' && ext !== '.tiff') {
-            return cb(new Error('Only JPEG, PNG, BMP, PDF, and TIFF are allowed'))
+            return cb(new  multer.MulterError('Only JPEG, PNG, BMP, PDF, and TIFF are allowed!'));
         }
         cb(null, true)
     },
@@ -204,14 +204,15 @@ app.post('/api/v1/textScan', upload.single('image'), (req, res) => {
 
 function errHandler(err, req, res, next) {
     if (err instanceof multer.MulterError) {
-        res.json({
+        return res.status(400).send({
             success: false,
-            message: err.message
+            code: err.code,
+            message:"Input Validation Failed"
         })
 
     }
     else {
-        res.json({
+        return res.status(500).send({
             success: false,
             message: err.message
         })
