@@ -297,6 +297,22 @@ Example response:
   "message": "Input Validation Failed"
 }
 ```
+#
+If input to the TextScanner API is other than  JPEG, PNG, BMP, PDF, and TIFF file types, error response lloks as below:
+```
+{
+  "success": false,
+  "message": "Only JPEG, PNG, BMP, PDF, and TIFF are allowed!"
+}
+```
+#
+If a file size of more than 4mb is uploaded, following error response is provided by the API:
+```
+{
+  "success": false,
+  "message": "LIMIT_FILE_SIZE"
+}
+```
 
 ## 500: Internal Server Error
 If problem is due to the API service, then this status code is returned.
